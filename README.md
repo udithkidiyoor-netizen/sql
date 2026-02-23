@@ -1,0 +1,2 @@
+# sql
+daily sql practise 
