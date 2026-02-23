@@ -1,6 +1,33 @@
-# Combine 2 tables
+1# Combine 2 tables
 
 select a1.firstname, a1.lastname, a2.city, a2.state
 from person a1
 left join address a2
 on a1.personid=a2.personid;
+
+2# Seconf Highest Salary
+select max(salary) from employee where salary<(select max(salary) from employee);
+select (select salary from employee order by salary desc limit 1) as secondhighestsalary
+select(select distinct salary from (select salary, dense_rank() over (order by salary desc) as rnk
+from employee)t where rnk=2) as secondhighestsalary;
+
+3# Rank Score
+select score, dense_rank() over (order by score desc) as rnk 
+from scores;
+
+4#  Num appearing 3 cons times
+select distinct l1.num 
+from logs l1 
+join logs l2
+on l1.num=l2.num
+and l1.id=l2.id-1
+join logs l3
+on l2.num=l3.num 
+and l2.id=l3.id-1;
+
+5# Employees earning more than their manager
+select e1.name as employee
+from employee e1 
+join employee e2
+on e1.managerid=e2.id
+where e1.salary>e2.salary;
