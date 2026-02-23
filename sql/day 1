@@ -1,1 +1,6 @@
+# Combine 2 tables
 
+select a1.firstname, a1.lastname, a2.city, a2.state
+from person a1
+left join address a2
+on a1.personid=a2.personid;
