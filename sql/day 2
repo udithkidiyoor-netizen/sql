@@ -1,0 +1,30 @@
+6# Duplicate email
+select email from person group by email having count(email)>1;
+
+7# Customers who never order
+select e1.name as customers
+from customers e1
+left join orders e2
+on e1.id=e2.customerid
+where e2.customerid is null;
+
+8# Highet salary in Each Department
+select d.name, t.name, t.salary from(
+select *, dense_rank() over (partition by departmentid order by salary desc) as rnk 
+from employee
+)t join department d
+where rnk=1;
+
+9# Top 3 salary
+  with cte as (
+  select a2.name as department, a1.name as employee, a1.salary,
+  dense_rank() over(partition by a1.departmentid order by a1.salary desc) as rnk
+  from employee a1
+  join department a2
+  on a1.departmentid=a2.id)
+  select department, employee, salary
+  from cte 
+  where rnk<=3;
+
+10# delete duplicate email
+delete from person where id not in( select id from (select min(id) as id from person group by email)t) ;
