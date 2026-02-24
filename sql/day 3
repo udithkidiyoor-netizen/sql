@@ -1,1 +1,40 @@
+11# Rising temperature
+select w1.id 
+from weather w1 
+join weather w2
+on w1.recorddate=adddate(w2.recorddate, interval 1 day)
+where w1.temperature>w2.temperature;
 
+12# Game First login date
+select player_id, min(event_date) as first_login
+from activity 
+group by player_id;
+
+13# game fraction
+WITH first_login AS (
+    SELECT player_id, MIN(event_date) AS first_date
+    FROM Activity
+    GROUP BY player_id
+)
+SELECT 
+    ROUND(
+        COUNT(DISTINCT a.player_id) / 
+        (SELECT COUNT(DISTINCT player_id) FROM Activity),
+    2) AS fraction
+FROM Activity a
+JOIN first_login f
+  ON a.player_id = f.player_id
+ AND a.event_date = DATE_ADD(f.first_date, INTERVAL 1 DAY);
+
+14# Employee Bonus
+select t1.name, t2.bonus 
+from employee t1
+left join bonus t2
+on t1.empid=t2.empid
+where t2.bonus<1000 or t2.bonus is null;
+
+15# Customer referee
+select name
+from customer
+where referee_id!=2 
+or referee_id is null;
