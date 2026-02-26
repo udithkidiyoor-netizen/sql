@@ -7,5 +7,19 @@ select name, population, area from world where area>=3000000 or population>=2500
 18# Class with atleast 5 students
 select class from courses group by class having count(student)>=5;
 
-19# 
+19# stadium traffic
+with cte as(
+    select *,
+    id-row_number() over(order by id) as rn
+    from stadium 
+    where people>=100
+)
+select id, visit_date, people
+from cte 
+where rn in (select rn 
+from cte 
+group by rn
+having count(*)>=3)
+order by visit_date;
+
   
