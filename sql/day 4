@@ -1,0 +1,11 @@
+16# Highest orders
+select customer_number from orders group by customer_number order by count(order_number) desc limit 1;
+
+17# Big Countries
+select name, population, area from world where area>=3000000 or population>=25000000;
+
+18# Class with atleast 5 students
+select class from courses group by class having count(student)>=5;
+
+19# 
+  
